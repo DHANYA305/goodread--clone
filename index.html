@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goodreads Clone</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --primary: #333;
+      --accent: #00635d;
+      --card-bg: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background-color: var(--bg);
+      color: var(--primary);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--accent);
+      padding: 1rem;
+      color: white;
+    }
+    header h1 {
+      margin: 0;
+    }
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+    }
+    .container {
+      display: flex;
+      padding: 1rem;
+    }
+    .main {
+      flex: 3;
+    }
+    .sidebar {
+      flex: 1;
+      margin-left: 1rem;
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .shelf {
+      margin-bottom: 2rem;
+    }
+    .shelf h2 {
+      border-bottom: 2px solid var(--accent);
+    }
+    .books {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .book {
+      background: var(--card-bg);
+      padding: 0.5rem;
+      border-radius: 6px;
+      width: 120px;
+      text-align: center;
+    }
+    .book img {
+      width: 100%;
+      border-radius: 4px;
+    }
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    #recommendation {
+      margin-top: 1rem;
+      background: #e6f4f1;
+      padding: 1rem;
+      border-radius: 6px;
+      display: none;
+    }
+    #filterContainer {
+      margin-bottom: 1rem;
+    }
+    #genreFilter {
+      padding: 0.4rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><img src="C:\Users\Anitha Kengeri\Downloads\goodreads.png" style="height: 70px; vertical-align: middle; margin-right: 500px;">GoodReads+</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">My Books</a>
+      <a href="#">Browse</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="main">
+      <div id="filterContainer">
+        <label for="genreFilter">🎯 Filter by Genre: </label>
+        <select id="genreFilter" onchange="renderShelves()">
+          <option value="all">All</option>
+        </select>
+      </div>
+      <div class="shelf" id="wantToRead">
+        <h2>📚 Want to Read</h2>
+        <div class="books"></div>
+      </div>
+      <div class="shelf" id="currentlyReading">
+        <h2>📖 Currently Reading</h2>
+        <div class="books"></div>
+      </div>
+      <div class="shelf" id="read">
+        <h2>✅ Read</h2>
+        <div class="books"></div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <h3>📍 Nearby Stores</h3>
+      <button onclick="findBookstores()">Find Bookstores Near Me</button>
+
+      <h3>🧠 Book Recommender</h3>
+      <button onclick="recommendBook()">Recommend Me a Book</button>
+      <div id="recommendation"></div>
+    </div>
+  </div>
+
+  <script>
+    const books = [
+      { title: "The Hobbit", author: "J.R.R. Tolkien", genre: "Fantasy", shelf: "read", rating: 5, img: "https://covers.openlibrary.org/b/id/6979861-L.jpg" },
+      { title: "Dune", author: "Frank Herbert", genre: "Sci-Fi", shelf: "read", rating: 4, img: "https://covers.openlibrary.org/b/id/9150212-L.jpg" },
+      { title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", genre: "Fantasy", shelf: "read", rating: 5, img: "https://covers.openlibrary.org/b/id/7884861-L.jpg" },
+      { title: "To Kill a Mockingbird", author: "Harper Lee", genre: "Classic", shelf: "read", rating: 5, img: "https://covers.openlibrary.org/b/id/8225260-L.jpg" },
+      { title: "1984", author: "George Orwell", genre: "Dystopian", shelf: "wantToRead", rating: null, img: "https://covers.openlibrary.org/b/id/7222246-L.jpg" },
+      { title: "Sapiens", author: "Yuval Noah Harari", genre: "History", shelf: "wantToRead", rating: null, img: "https://covers.openlibrary.org/b/id/8372092-L.jpg" },
+      { title: "Clean Code", author: "Robert C. Martin", genre: "Programming", shelf: "wantToRead", rating: null, img: "https://covers.openlibrary.org/b/id/7100931-L.jpg" },
+      { title: "Atomic Habits", author: "James Clear", genre: "Self-help", shelf: "currentlyReading", rating: null, img: "https://covers.openlibrary.org/b/id/10340333-L.jpg" },
+      { title: "The Psychology of Money", author: "Morgan Housel", genre: "Finance", shelf: "currentlyReading", rating: null, img: "https://covers.openlibrary.org/b/id/10958334-L.jpg" },
+      { title: "The Name of the Wind", author: "Patrick Rothfuss", genre: "Fantasy", shelf: null, rating: 5, img: "https://covers.openlibrary.org/b/id/8231992-L.jpg" },
+      { title: "Neuromancer", author: "William Gibson", genre: "Sci-Fi", shelf: null, rating: 4, img: "https://covers.openlibrary.org/b/id/10507258-L.jpg" },
+      { title: "Pride and Prejudice", author: "Jane Austen", genre: "Romance", shelf: null, rating: 5, img: "https://covers.openlibrary.org/b/id/8228691-L.jpg" },
+      { title: "Gone Girl", author: "Gillian Flynn", genre: "Mystery", shelf: null, rating: 4, img: "https://covers.openlibrary.org/b/id/8228697-L.jpg" },
+      { title: "The Shining", author: "Stephen King", genre: "Horror", shelf: null, rating: 4, img: "https://covers.openlibrary.org/b/id/8231855-L.jpg" },
+      { title: "The Subtle Art of Not Giving a F*ck", author: "Mark Manson", genre: "Self-help", shelf: null, rating: 3, img: "https://covers.openlibrary.org/b/id/9350934-L.jpg" }
+    ];
+
+    function renderShelves() {
+      const selectedGenre = document.getElementById('genreFilter').value;
+      ['wantToRead', 'currentlyReading', 'read'].forEach(shelf => {
+        const container = document.querySelector(`#${shelf} .books`);
+        container.innerHTML = '';
+        books.filter(b => b.shelf === shelf && (selectedGenre === 'all' || b.genre === selectedGenre))
+             .forEach(book => {
+          const div = document.createElement('div');
+          div.className = 'book';
+          div.innerHTML = `<img src="${book.img}" alt="cover" /><p><strong>${book.title}</strong></p><p>${book.author}</p>`;
+          container.appendChild(div);
+        });
+      });
+    }
+
+    function populateGenreFilter() {
+      const genreFilter = document.getElementById('genreFilter');
+      const genres = Array.from(new Set(books.map(book => book.genre))).sort();
+      genres.forEach(genre => {
+        const option = document.createElement('option');
+        option.value = genre;
+        option.textContent = genre;
+        genreFilter.appendChild(option);
+      });
+    }
+
+    function recommendBook() {
+      const readBooks = books.filter(b => b.shelf === 'read');
+      const genreCount = {};
+      readBooks.forEach(b => genreCount[b.genre] = (genreCount[b.genre] || 0) + 1);
+      const topGenre = Object.entries(genreCount).sort((a, b) => b[1] - a[1])[0]?.[0];
+      const recommendation = books.find(b => b.genre === topGenre && !b.shelf);
+      const box = document.getElementById('recommendation');
+      if (recommendation) {
+        box.innerHTML = `
+          <h4>Based on your reading, we recommend:</h4>
+          <p><strong>${recommendation.title}</strong> by ${recommendation.author}</p>
+          <img src="${recommendation.img}" alt="cover" style="width:100px;border-radius:6px;"/>
+          <p>Because you read <strong>${topGenre}</strong> books ⭐</p>
+        `;
+        box.style.display = 'block';
+      } else {
+        box.innerHTML = `<p>No recommendation available. Add more books to your shelves!</p>`;
+        box.style.display = 'block';
+      }
+    }
+
+    function findBookstores() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const { latitude, longitude } = pos.coords;
+          window.open(`https://www.google.com/maps/search/bookstore/@${latitude},${longitude},15z`);
+        }, () => alert('Location access denied.'));
+      } else {
+        alert('Geolocation not supported.');
+      }
+    }
+
+    populateGenreFilter();
+    renderShelves();
+  </script>
+</body>
+</html>
