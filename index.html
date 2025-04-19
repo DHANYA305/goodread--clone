@@ -69,6 +69,11 @@
       width: 100%;
       border-radius: 4px;
     }
+    .no-books {
+      font-style: italic;
+      color: #888;
+      margin-top: 0.5rem;
+    }
     button {
       background: var(--accent);
       color: white;
@@ -141,21 +146,21 @@
 
   <script>
     const books = [
-      { title: "The Hobbit", author: "J.R.R. Tolkien", genre: "Fantasy", shelf: "read", rating: 5, img: "https://covers.openlibrary.org/b/id/6979861-L.jpg" },
-      { title: "Dune", author: "Frank Herbert", genre: "Sci-Fi", shelf: "read", rating: 4, img: "https://covers.openlibrary.org/b/id/9150212-L.jpg" },
-      { title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", genre: "Fantasy", shelf: "read", rating: 5, img: "https://covers.openlibrary.org/b/id/7884861-L.jpg" },
-      { title: "To Kill a Mockingbird", author: "Harper Lee", genre: "Classic", shelf: "read", rating: 5, img: "https://covers.openlibrary.org/b/id/8225260-L.jpg" },
-      { title: "1984", author: "George Orwell", genre: "Dystopian", shelf: "wantToRead", rating: null, img: "https://covers.openlibrary.org/b/id/7222246-L.jpg" },
-      { title: "Sapiens", author: "Yuval Noah Harari", genre: "History", shelf: "wantToRead", rating: null, img: "https://covers.openlibrary.org/b/id/8372092-L.jpg" },
-      { title: "Clean Code", author: "Robert C. Martin", genre: "Programming", shelf: "wantToRead", rating: null, img: "https://covers.openlibrary.org/b/id/7100931-L.jpg" },
-      { title: "Atomic Habits", author: "James Clear", genre: "Self-help", shelf: "currentlyReading", rating: null, img: "https://covers.openlibrary.org/b/id/10340333-L.jpg" },
-      { title: "The Psychology of Money", author: "Morgan Housel", genre: "Finance", shelf: "currentlyReading", rating: null, img: "https://covers.openlibrary.org/b/id/10958334-L.jpg" },
-      { title: "The Name of the Wind", author: "Patrick Rothfuss", genre: "Fantasy", shelf: null, rating: 5, img: "https://covers.openlibrary.org/b/id/8231992-L.jpg" },
-      { title: "Neuromancer", author: "William Gibson", genre: "Sci-Fi", shelf: null, rating: 4, img: "https://covers.openlibrary.org/b/id/10507258-L.jpg" },
-      { title: "Pride and Prejudice", author: "Jane Austen", genre: "Romance", shelf: null, rating: 5, img: "https://covers.openlibrary.org/b/id/8228691-L.jpg" },
-      { title: "Gone Girl", author: "Gillian Flynn", genre: "Mystery", shelf: null, rating: 4, img: "https://covers.openlibrary.org/b/id/8228697-L.jpg" },
-      { title: "The Shining", author: "Stephen King", genre: "Horror", shelf: null, rating: 4, img: "https://covers.openlibrary.org/b/id/8231855-L.jpg" },
-      { title: "The Subtle Art of Not Giving a F*ck", author: "Mark Manson", genre: "Self-help", shelf: null, rating: 3, img: "https://covers.openlibrary.org/b/id/9350934-L.jpg" }
+      { title: "The Hobbit", author: "J.R.R. Tolkien", genre: "Fantasy", shelf: "read", rating: 5, img: "https://covers.openlibrary.org/b/isbn/054792822X-L.jpg" },
+      { title: "Dune", author: "Frank Herbert", genre: "Sci-Fi", shelf: "read", rating: 4, img: "https://covers.openlibrary.org/b/isbn/0441172717-L.jpg" },
+      { title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", genre: "Fantasy", shelf: "read", rating: 5, img: "https://covers.openlibrary.org/b/isbn/059035342X-L.jpg" },
+      { title: "To Kill a Mockingbird", author: "Harper Lee", genre: "Classic", shelf: "read", rating: 5, img: "https://covers.openlibrary.org/b/isbn/0061120081-L.jpg" },
+      { title: "1984", author: "George Orwell", genre: "Dystopian", shelf: "wantToRead", rating: null, img: "https://covers.openlibrary.org/b/isbn/0451524934-L.jpg" },
+      { title: "Sapiens", author: "Yuval Noah Harari", genre: "History", shelf: "wantToRead", rating: null, img: "https://covers.openlibrary.org/b/isbn/0062316095-L.jpg" },
+      { title: "Clean Code", author: "Robert C. Martin", genre: "Programming", shelf: "wantToRead", rating: null, img: "https://covers.openlibrary.org/b/isbn/0132350882-L.jpg" },
+      { title: "Atomic Habits", author: "James Clear", genre: "Self-help", shelf: "currentlyReading", rating: null, img: "https://covers.openlibrary.org/b/isbn/0735211299-L.jpg" },
+      { title: "The Psychology of Money", author: "Morgan Housel", genre: "Finance", shelf: "currentlyReading", rating: null, img: "https://covers.openlibrary.org/b/isbn/0857197681-L.jpg" },
+      { title: "The Name of the Wind", author: "Patrick Rothfuss", genre: "Fantasy", shelf: null, rating: 5, img: "https://covers.openlibrary.org/b/isbn/0756404746-L.jpg" },
+      { title: "Neuromancer", author: "William Gibson", genre: "Sci-Fi", shelf: null, rating: 4, img: "https://covers.openlibrary.org/b/isbn/0441569595-L.jpg" },
+      { title: "Pride and Prejudice", author: "Jane Austen", genre: "Romance", shelf: null, rating: 5, img: "https://covers.openlibrary.org/b/isbn/0141439513-L.jpg" },
+      { title: "Gone Girl", author: "Gillian Flynn", genre: "Mystery", shelf: null, rating: 4, img: "https://covers.openlibrary.org/b/isbn/0307588378-L.jpg" },
+      { title: "The Shining", author: "Stephen King", genre: "Horror", shelf: null, rating: 4, img: "https://covers.openlibrary.org/b/isbn/0307743659-L.jpg" },
+      { title: "The Subtle Art of Not Giving a F*ck", author: "Mark Manson", genre: "Self-help", shelf: null, rating: 3, img: "https://covers.openlibrary.org/b/isbn/0062457713-L.jpg" }
     ];
 
     function renderShelves() {
@@ -163,13 +168,17 @@
       ['wantToRead', 'currentlyReading', 'read'].forEach(shelf => {
         const container = document.querySelector(`#${shelf} .books`);
         container.innerHTML = '';
-        books.filter(b => b.shelf === shelf && (selectedGenre === 'all' || b.genre === selectedGenre))
-             .forEach(book => {
-          const div = document.createElement('div');
-          div.className = 'book';
-          div.innerHTML = `<img src="${book.img}" alt="cover" /><p><strong>${book.title}</strong></p><p>${book.author}</p>`;
-          container.appendChild(div);
-        });
+        const filteredBooks = books.filter(b => b.shelf === shelf && (selectedGenre === 'all' || b.genre === selectedGenre));
+        if (filteredBooks.length === 0) {
+          container.innerHTML = '<p class="no-books">No books available in this genre.</p>';
+        } else {
+          filteredBooks.forEach(book => {
+            const div = document.createElement('div');
+            div.className = 'book';
+            div.innerHTML = `<img src="${book.img}" alt="cover" /><p><strong>${book.title}</strong></p><p>${book.author}</p>`;
+            container.appendChild(div);
+          });
+        }
       });
     }
 
